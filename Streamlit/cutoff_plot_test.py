@@ -76,7 +76,7 @@ st.markdown(
 st.caption('Caption text to go underneath the figures being plotted')
 #Imput user parameters
 material = st.selectbox('Pick a material:',['WS2','MoS2','Graphene','NiPS3','MnPS3','GaS','BN','Ni(OH)2','Cu(OH)2','RuCl3','CrTe3'])
-solvent = st.selectbox('Pick a solvent:',['Water','NMP','CHP','IPA'])
+solvent = st.selectbox('Pick a solvent:',['Water','NMP','CHP','IPA','Cyrene'])
 rpm_lower = st.slider('Select rpm of supernatant retention (use left/right arrow keys for fine adjustment)', min_value=100, max_value=30000)
 rpm_higher = st.slider('Select rpm of sedimentation retention (use left/right arrow keys for fine adjustment)', min_value=100, max_value=30000)
 time_hour = st.slider('Select time in minutes (use left/right arrow keys for fine adjustment)', min_value=10, max_value=360, value=120) / 60
@@ -133,6 +133,9 @@ if solvent == 'CHP':
 if solvent == 'IPA':
     n = 3.31E-3
     pL = 785
+if solvent == 'Cyrene':
+    n = 14.5E-3
+    pL = 1250
 
 #Define the plot parameters and apply the model to the plot
 dummy_layer_numbers = np.arange(start=0.5, stop=50, step=0.1)
