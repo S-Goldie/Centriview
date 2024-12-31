@@ -89,11 +89,17 @@ material = st.selectbox('Pick a material:',materials_list)
 if material == 'Other':
     pNS = st.number_input('Density of Custom Material in $g$ $cm^{-3}$', key='matdensity1', value=2.0)*1000
     d1 = st.number_input('Monolayer thickness from unit cell in Å', key='matthickness', value=3.0)*1E-10
-else:
+    aspect_flag = False
+elif len(prop.MATERIALS[material]) > 2:
     pNS = prop.MATERIALS[material][0]
     d1 = prop.MATERIALS[material][1]
     k1 = prop.MATERIALS[material][2]
     k2 = prop.MATERIALS[material][3]
+    aspect_flag = True
+else:
+    pNS = prop.MATERIALS[material][0]
+    d1 = prop.MATERIALS[material][1]
+    aspect_flag = False
 
 solvent = st.selectbox('Pick a solvent:',solvent_list)
 temp = st.slider('Temperature (use left/right arrow keys for fine adjustment', min_value=5, max_value=50, key='temperature1')
@@ -126,7 +132,7 @@ rpm_higher = col2.slider('Select rpm of sedimentation retention (use left/right 
 #Define the plot parameters and apply the model to the plot
 dummy_layer_numbers = np.arange(start=0.5, stop=20.1, step=0.1)
 dummy_lateral_size = np.arange(start=10, stop=1501, step=1)
-if material != 'Other':
+if aspect_flag == True:
     aspect_ratio_lengths = 1e09*dummy_layer_numbers*d1*k2/np.sqrt(k1)
 
 X, Y = np.meshgrid(dummy_layer_numbers, dummy_lateral_size)
@@ -142,7 +148,7 @@ mplstyle.use('fast')
 fig1, ax1 = plt.subplots()
 CS = ax1.contour(X, Y, Z, 6, cmap=cm.coolwarm)
 ax1.set(xlim=(0, 20), ylim=(0, 1500),  xlabel="Layer Number", ylabel="Lateral Size / nm")
-if material != 'Other':
+if aspect_flag == True:
     ax1.plot(dummy_layer_numbers, aspect_ratio_lengths, linestyle='--', linewidth=1, color='grey')
 plt.tight_layout()
 st.subheader('Flake Size Probability Distribution')
@@ -172,9 +178,9 @@ st.caption('''
            blue. The grey dashed line shows the mean aspect ratio of liquid phase 
            exfoliated nanosheets.''')
 
-if material == 'Other':
+if aspect_flag == False:
     st.write('''__For a new material with unknown aspect-ratio's the 1D trend cannot be estimated.__''')
-elif material != 'Other':
+elif aspect_flag == True:
     with st.expander("See more information"):
         st.markdown("""
                     To better illustrate this 2D contour plot, consider the mean nanosheet 
