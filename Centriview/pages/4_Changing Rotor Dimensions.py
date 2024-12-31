@@ -32,11 +32,11 @@ d0 = 4.25E-10       #surfactant layer thickness, from Hirsham
 solvent_list = ['Water'] + list(prop.SOLVENTS.keys()) + ['IPA:Water Mixture','Other']
 materials_list = list(prop.MATERIALS.keys()) + ['Other']
 
-#parameters1 = [mat1_pNS, mat1_d1, mat1_k1, mat1_k2, density1, viscosity1, r1, r2]
+#parameters1 = [mat1_pNS, mat1_d1, density1, viscosity1, r1, r2]
 
 def supernatant_fraction_arrays(dummy_layer_numbers, dummy_lateral_size, time_min, rpm, params):
     "Produces an array of fraction remaining in the supernatant from arrays of thickness and lateral size"
-    pNS, d1, pL, n, r1, r2 = params[0], params[1], params[4], params[5], params[6], params[7]
+    pNS, d1, pL, n, r1, r2 = params[0], params[1], params[2], params[3], params[4], params[5]
     time_s = 60 * time_min
     w = (rpm * 2 * np.pi) / 60
     experiment_constant = time_s*w*w/(12*n*np.cbrt(3/(4*np.pi)))
@@ -96,23 +96,16 @@ material2 = col2.selectbox('Material:',materials_list, key='material2selection')
 if material1 == 'Other':
     mat1_pNS = col1.number_input('Density of Custom Material in $g cm^{-3}$', key='mat1_pNS')*1000
     mat1_d1 = col1.number_input('Layer Thickness of Custom Material in $nm$', key='mat1_d1')*1E-9
-    mat1_k1 = 2
-    mat1_k2 = 45
 else:
     mat1_pNS = prop.MATERIALS[material1][0]
     mat1_d1 = prop.MATERIALS[material1][1]
-    mat1_k1 = prop.MATERIALS[material1][2]
-    mat1_k2 = prop.MATERIALS[material1][3]
+
 if material2 == 'Other':
     mat2_pNS = col2.number_input('Density of Custom Material in $g cm^{-3}$', key='mat2_pNS')*1000
     mat2_d1 = col2.number_input('Layer Thickness of Custom Material in $nm$', key='mat2_d1')*1E-9
-    mat2_k1 = 2
-    mat2_k2 = 45
 else:
     mat2_pNS = prop.MATERIALS[material2][0]
     mat2_d1 = prop.MATERIALS[material2][1]
-    mat2_k1 = prop.MATERIALS[material2][2]
-    mat2_k2 = prop.MATERIALS[material2][3]
 
 temp1 = col1.slider('Temperature (use left/right arrow keys for fine adjustment', min_value=5, max_value=50, key='temperature1')
 temp2 = col2.slider('Temperature (use left/right arrow keys for fine adjustment', min_value=5, max_value=50, key='temperature2')
@@ -153,8 +146,8 @@ r2 = col1.number_input('$R_2$ - Radius from axis to top of the sediment in mm', 
 q1 = col2.number_input('$Q_1$ - Radius from axis to top of the liquid in mm', value=71)/1000
 q2 = col2.number_input('$Q_2$ - Radius from axis to top of the sediment in mm', value=100)/1000
 
-parameters1 = [mat1_pNS, mat1_d1, mat1_k1, mat1_k2, density1, viscosity1, r1, r2]
-parameters2 = [mat2_pNS, mat2_d1, mat2_k1, mat2_k2, density2, viscosity2, q1, q2]
+parameters1 = [mat1_pNS, mat1_d1, density1, viscosity1, r1, r2]
+parameters2 = [mat2_pNS, mat2_d1, density2, viscosity2, q1, q2]
   
 time_min = col1.slider('Previous experiment time in minutes', min_value=10, max_value=540, value=120)
 col1.markdown(f'Hours: {time_min/60:.1f}')
