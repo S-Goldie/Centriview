@@ -20,7 +20,9 @@ MATERIALS = {
     "NiOH2" :   [4100, 4.6E-10, 2.0, 45],
     "CuOH2" :   [3370, 5E-10, 2.0, 45],
     "RuCl3" :   [3260, 6E-10, 2.0, 45],
-    "CrTe3" :   [4700, 1.1E-9, 2.0, 45]
+    "CrTe3" :   [4700, 1.1E-9, 2.0, 45],
+    "Black Phosphorus" :    [2690, 5E-10],
+    "Antimony" :[6694, 5.63E-10]
     }
 
 #"Keys" : ['density_m', 'density_c', 'viscosity_A', 'viscosity_Ea']
@@ -35,6 +37,7 @@ SOLVENTS = {
     "Ethanol" : [-9.11871E-4, 0.80885, 0.003494, 14223.19],
     "Methanol" : [-9.38703E-4, 0.81022, 0.0105775, 9821.7161],
     "DCM" : [-0.0021, 1.36941, 0.0265109, 6821.8779],
+    "Butan-2-ol" : [-8.684E-4, 0.82422, 0.000112, 25247.25]
     }
 
 solvent_list = ['Water'] + list(SOLVENTS.keys()) + ['IPA:Water Mixture','Other']
