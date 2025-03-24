@@ -47,18 +47,6 @@ def supernatant_fraction_arrays(dummy_layer_numbers, dummy_lateral_size, time_mi
     fraction_matrix = np.maximum((r2*np.exp(-velocity_matrix)-r1)/(r2-r1), 0)
     return(fraction_matrix)
     
-def fraction_linear(dummy_layer_numbers, time_min, rpm, params):
-    pNS, d1, k1, k2, pL, n, r1, r2 = params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7]
-    time_s = 60 * time_min
-    w = (rpm * 2 * np.pi) / 60
-    experiment_constant = time_s*w*w*k2/(12*n*np.sqrt(2*k1)*np.cbrt(3/(4*np.pi)))
-    surfactant_density_term = 2*d0*(pS-pL)
-    nanosheet_density_term = pNS-pL
-    height = d1 * dummy_layer_numbers
-    array = -1*experiment_constant*(height**2 * nanosheet_density_term + height*surfactant_density_term)
-    fraction = np.maximum((r2*np.exp(array)-r1)/(r2-r1), 0)
-    return(fraction)
-
 #Currently no weighting on this function
 def difference_optimisation(target_rpm):
     "Compares the difference between two different sedimentation processes for optimisation"
