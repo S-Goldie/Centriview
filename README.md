@@ -1,12 +1,15 @@
-## Current contents remains confidential as part of EU Project 2D printables.
-
 # Centriview
 Visual tools for understanding the motion of 2D nanosheets in a centrifugal field.
-Build version 0.2, in development. Multi-page application functions with complete nested folder structure as visualisation and computational tool.
+The theoretical basis and experimental data underpinning these tools are currently available as a pre-print. For further details on the derivation and detail discussion of the model, please click [here](http://arxiv.org/abs/2503.05111).
 
 ## Contents
-* Python scripts for analysis
-* Working data files while model validation in progress
-* Solvent data repository for density and viscosity calculations
+* Python scripts for deployment of WebApp to visualise population changes using the Streamlit package.
+* Experimental data files from cascade centrifuge experiments.
+* Solvent data repository for density and viscosity calculations.
 
-Because we are still validating and working to fully understand the model this will serve as a central data and analysis repository, as well as holding the working progress of the WebApp. Once our understanding of the model is complete, many of those files can be removed to leave a clean repository of analysis code and WebApp files.
+The Centriview tool is more suitable as a deployed webapp, _coming soon_. However, the source code is available here.
+Additional features may be explored as branches while a stable deployment will be maintained in the `main` branch.
+
+
+_The tools and data files made available within this repository were supported by funding from the European Union (2D-PRINTABLE HE: 101135196)_
+_If any use of these tools is made for published work please reference our accompanying publication._
