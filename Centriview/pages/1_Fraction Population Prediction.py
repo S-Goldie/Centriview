@@ -65,10 +65,6 @@ def cutoff_area(layer_number, time_hour, rpm, r1, r2):
     w = (rpm * 2 * np.pi) / 60
     return (((np.log(r2 / r1) * (12 * n * np.cbrt(3 / (4 * np.pi))) / (time_s * w * w * (h * (pNS - pL) + 2 * d0 * (pS - pL)))) ** 2) * 1e18)
 
-def mixed_property_function(w, T, c):
-    return(c[0] + w*c[1] + T*c[2] + (w**2)*c[3] + w*T*c[4] + (T**2)*c[5] + (w**3)*c[6] + (w**2)*T*c[7] + w*(T**2)*c[8] + (T**3)*c[9])
-
-
 ##_FRONT END_##
 st.title('Modelling Centrifugation of 2D Nanomaterials')
 st.subheader('CONFIDENTIAL')
@@ -171,7 +167,7 @@ with st.expander("See more information"):
          """)
 
 st.pyplot(fig1)
-st.caption('''
+st.caption(r'''
            Colour contour plot showing the population distribution of flake sizes given 
            experimental details selected above. Lateral flake size refers to $\sqrt{LW}$. 
            The darker, orange represents a high population decaying down through 
