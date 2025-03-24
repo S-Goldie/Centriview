@@ -43,9 +43,13 @@ SOLVENTS = {
 solvent_list = ['Water'] + list(SOLVENTS.keys()) + ['IPA:Water Mixture','Other']
 materials_list = list(MATERIALS.keys()) + ['Other']
 
-#Constants for two phase mixtures, fitted using a crude two-dimensional polynomial
-IPAWaterDensity = [0.999581, -0.0867712, -0.000109338, -0.171483, -0.00165038, -1.24842e-06, 0.0592866, 0.00105765, -2.63718e-07, -1.86795e-08]
-IPAWaterViscosity = [1.78798, 14.9948, -0.0677034, -13.7734, -0.283823, 0.00133142, 1.61501, 0.194239, 0.000875951, -9.46676e-06]
+def mixed_property_function(w, T, parameter):
+    """Returns the density or viscosity depending on parameter flag, of a water-IPA binary mixture using crude 2d polynomial"""
+    if parameter == 'Density':
+        c = [0.999581, -0.0867712, -0.000109338, -0.171483, -0.00165038, -1.24842e-06, 0.0592866, 0.00105765, -2.63718e-07, -1.86795e-08]
+    elif parameter == 'Viscosity':
+        c = [1.78798, 14.9948, -0.0677034, -13.7734, -0.283823, 0.00133142, 1.61501, 0.194239, 0.000875951, -9.46676e-06]
+    return(c[0] + w*c[1] + T*c[2] + (w**2)*c[3] + w*T*c[4] + (T**2)*c[5] + (w**3)*c[6] + (w**2)*T*c[7] + w*(T**2)*c[8] + (T**3)*c[9])
 
 def solvent_viscosity(temp, solvent):
     """Returns the solvent viscosity in SI units given correct constants"""
