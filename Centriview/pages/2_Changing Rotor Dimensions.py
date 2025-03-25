@@ -58,20 +58,21 @@ def difference_optimisation(target_rpm):
 
 ###FRONT END###
 
-st.title('Consistent Seperation with Different Rotors - IN DEVELOPMENT')
-st.subheader('CONFIDENTIAL')
-st.markdown('_No information contained herein to be shared outside EU Project: 2D-PRINTABLE – GA No: 101135196_')
+st.title('Consistent Separation with Different Rotors')
 
 st.markdown('This calculation tool is designed to compare the seperation expected during a centrifugation process, \
-        and find the most suitable conditions to replicate that using different paramaeters including rotor. \
+        and find the most suitable conditions to replicate that using different parameters including different rotors and filling heights. \
         This final point is significant because an exact experimental equivalence can only be defined when the ratio of $R_1$ to $R_2$ \
         are equal between experiments. When different rotor geometery and fill heights are used only an approximate solution can be found.')
 
 st.subheader('Experiment Calculator')
-st.write('To match experiment conditions, select the conditions from the previous, old experiment to be matched and \
-        the conditions intended for the new experiment. Changing too many parameters simultaneously will cause greater error \
-        and instability in the suggested solution.\
-        Check the required units carefully, this is a common error when comparing information from different sources.')
+st.write("""
+        To match experiments, select the conditions from the previous and new experiment. Changing too many parameters simultaneously 
+        will cause greater error and instability in the suggested solution.
+
+         _Note: because of the nature of the approximation, the solver will attempt to minimise the difference between the two experiments. 
+         This may require longer than other calculations within this WebApp._
+        """)
 
 
 col1, col2 = st.columns(2)
@@ -108,8 +109,8 @@ elif solvent1 == 'Other':
     viscosity1 = col1.number_input('Viscosity of Custom Solvent in $cP$', key='solvisc1')/1000
 elif solvent1 == 'IPA:Water Mixture':
     composition1 = col1.slider('Weight Content of Alcohol', min_value=0.0, max_value=1.0, value=0.5, key='composition1')
-    density1 = prop.mixed_property_function(composition1, temp1, IPAWaterDensity)*1000
-    viscosity1 = prop.mixed_property_function(composition1, temp1, IPAWaterViscosity)/1000
+    density1 = prop.mixed_property_function(composition1, temp1, 'Density')*1000
+    viscosity1 = prop.mixed_property_function(composition1, temp1, 'Viscosity')/1000
 else:
     density1 = prop.solvent_density(temp1, solvent1)
     viscosity1 = prop.solvent_viscosity(temp1, solvent1)
@@ -122,8 +123,8 @@ elif solvent2 == 'Other':
     viscosity2 = col2.number_input('Viscosity of Custom Solvent in $cP$', key='solvisc2')/1000
 elif solvent2 == 'IPA:Water Mixture':
     composition2 = col2.slider('Weight Content of Alcohol', min_value=0.0, max_value=1.0, value=0.5, key='composition2')
-    density2 = prop.mixed_property_function(composition2, temp2, IPAWaterDensity)*1000
-    viscosity2 = prop.mixed_property_function(composition2, temp2, IPAWaterViscosity)/1000
+    density2 = prop.mixed_property_function(composition2, temp2, 'Density')*1000
+    viscosity2 = prop.mixed_property_function(composition2, temp2, 'Viscosity')/1000
 else:
     density2 = prop.solvent_density(temp2, solvent2)
     viscosity2 = prop.solvent_viscosity(temp2, solvent2)
@@ -172,6 +173,16 @@ st.caption('''
     show the fraction remaning of each flake size from the original experiment whilst the red lines show the optimised match.
     The closer the lines, the closer the match in experimental conditions.
     ''')
+with st.expander("See more information"):
+    st.markdown("""
+         The change in nanosheet distribution following the different centrifuge 
+         processes are shown as 2D contour plots in different colours (showing thickness and lateral
+         sizes independently). This function should be considered the _change_ in nanosheet population
+         following centrifugation.
+                
+        For a perfectly matched experiment, the two plots would be identical. The closer the lines, the closer the match. 
+        However, if different materials were selected the differenece in monolayer thickness will cause a mismatch in layer number.
+         """)
 st.write("Given a maximum achievable rotation speed, the minimum time required can be identified")
 max_rpm = st.number_input('Maximum rpm:', value = previous_rpm)
 
