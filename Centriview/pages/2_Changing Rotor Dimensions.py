@@ -157,6 +157,33 @@ st.write("The plots below show the difference between the two experimental condi
 fraction_matrix1 = supernatant_fraction_arrays(dummy_layer_numbers, dummy_lateral_size, time_min, previous_rpm, parameters1)
 fraction_matrix2 = supernatant_fraction_arrays(dummy_layer_numbers, dummy_lateral_size, time_min, optimal_rpm, parameters2)
 
+
+max_rpm = st.number_input('Maximum rpm:', value = previous_rpm)
+
+time2 = np.arange(10, 540, 1)
+rpm2 = np.sqrt(optimal_rpm**2 * time_min / time2)
+optimal_time = optimal_rpm**2 * time_min / max_rpm**2
+
+st.markdown(f"__Optimal time at maximum rpm to match the original experiment as entered above: {int(optimal_time)} min__")
+
+fig2, ax2 = plt.subplots()
+ax2.set(xlim=(0,540), xlabel="Time / min", ylabel="Angular velocity / rpm")
+ax2.plot(time2, rpm2, color='k')
+ax2.plot([0, 540], [max_rpm, max_rpm], color='grey', linestyle='dashed')
+ax2.plot([optimal_time, optimal_time], [max_rpm*0.8, max_rpm*1.2], color='grey', linestyle='dashed')
+#ax2.axvline(optimal_time, ymin=0, ymax=1, color='grey', linestyle='dashed')
+#ax2.axhline(max_rpm, xmin=0, xmax=1, color='grey', linestyle='dashed')
+
+fig_html = mpld3.fig_to_html(fig2)
+components.html(fig_html, height=600)
+
+st.caption('''
+    The relationship between rpm and time is such that both can be changed together while still producing the same experimental result.
+    In this case, the user can manipulate the plot to find the desired balance between rotation time and speed. Given a maximum rpm above, 
+    the required experimental time is also shown.
+    ''')
+
+
 fig1, ax1 = plt.subplots()
 CS1 = ax1.contour(X, Y, fraction_matrix1, 10, cmap='Blues')
 ax1.clabel(CS1, inline=1, fontsize=10)
@@ -184,27 +211,3 @@ with st.expander("See more information"):
         However, if different materials were selected the differenece in monolayer thickness will cause a mismatch in layer number.
          """)
 st.write("Given a maximum achievable rotation speed, the minimum time required can be identified")
-max_rpm = st.number_input('Maximum rpm:', value = previous_rpm)
-
-time2 = np.arange(10, 540, 1)
-rpm2 = np.sqrt(optimal_rpm**2 * time_min / time2)
-optimal_time = optimal_rpm**2 * time_min / max_rpm**2
-
-st.markdown(f"__Optimal time at maximum rpm to match the original experiment as entered above: {int(optimal_time)} min__")
-
-fig2, ax2 = plt.subplots()
-ax2.set(xlim=(0,540), xlabel="Time / min", ylabel="Angular velocity / rpm")
-ax2.plot(time2, rpm2, color='k')
-ax2.plot([0, 540], [max_rpm, max_rpm], color='grey', linestyle='dashed')
-ax2.plot([optimal_time, optimal_time], [max_rpm*0.8, max_rpm*1.2], color='grey', linestyle='dashed')
-#ax2.axvline(optimal_time, ymin=0, ymax=1, color='grey', linestyle='dashed')
-#ax2.axhline(max_rpm, xmin=0, xmax=1, color='grey', linestyle='dashed')
-
-fig_html = mpld3.fig_to_html(fig2)
-components.html(fig_html, height=600)
-
-st.caption('''
-    The relationship between rpm and time is such that both can be changed together while still producing the same experimental result.
-    In this case, the user can manipulate the plot to find the desired balance between rotation time and speed. Given a maximum rpm above, 
-    the required experimental time is also shown.
-    ''')
