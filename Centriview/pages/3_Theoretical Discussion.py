@@ -50,7 +50,7 @@ st.markdown(
 '''
     )
 
-st.image('radius_scheme.png',caption='Schematic of radii depending on filling height and rotor geometry.')
+st.image('https://github.com/S-Goldie/Centriview/blob/main/Centriview/radius_scheme.png?raw=true',caption='Schematic of radii depending on filling height and rotor geometry.')
 
 #Theoretical Discussion underpinning the experiment comparison
 st.subheader('Experiment Comparison Background')
@@ -111,7 +111,7 @@ st.markdown("""
             small nanosheets from a sample. The effect of subsequent steps can be 
             described as the relative fraction after each experiment.
             """) 
-st.image('cascade_scheme.png', caption='Scheme of a three-step centrifuge process \
+st.image('https://github.com/S-Goldie/Centriview/blob/main/Centriview/cascade_scheme.png?raw=true', caption='Scheme of a three-step centrifuge process \
          highlighting the different fractions that are extracted by separation \
          of sediment and supernatant after each centrifuge step.')
 st.markdown("""
