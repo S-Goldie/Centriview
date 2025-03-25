@@ -32,31 +32,22 @@ def speed_equivalence(t_1, w_1, n_1, t_2, n_2, p_NS1, p_NS2, p_l1, p_l2):
     w2 = k * (t_1*n_2*w_1**2)/(t_2*n_1)
     return np.sqrt(w2)
 
-#once user inputs have been selected, define correct parameters and calculate experimental parameters
-#plot time vs rpm for equivalent seperation (interactive plot) and highlight the minimum time at hgihest speed possible for the rotor selected
-
-
-###FRONT END###
-#Could do with deciding on a standard page banner with title, citation etc.
-#Text outlining the basic idea behind the calculation and brief summary of the key parameters and operation of the calculation
-
-#User inputs:
-    #from experiment to match material, solvent, temperature, (mixture composition), material, change rotor?
-    #if rotor swap then rotor and fill height before and after
-    #intended experiment needs material, solvent, temperature, (mixture composition), rotor and fill height if changed
-
-#output of interactive plot and minimum time at high speed
-
-#discussion of equations with derivation to clarify operation of calculator and what all the terms mean
 
 ##_FRONT END CODE_##
-st.title('Consistent Centrifugation Calculator')
-st.subheader('CONFIDENTIAL')
-st.markdown('_No information contained herein to be shared outside EU Project: 2D-PRINTABLE – GA No: 101135196_')
-st.write('This calculation tool is designed to compare the separation expected during a centrifugation process, \
-        and predict the experimental conditions required to replicate such separation when using different solvents, \
-        materials or even different temperatures. Currently a working progress, these calculations \
-        are underpinned by the theoretical work undertaken in the publication listed on the home page.')
+st.title('Experiment Comparison')
+st.write("""
+         This calculation tool is designed to predict the experimental conditions required to replicate a centrifuge
+         experiment when using different solvents, materials or even different temperatures. These calculations are underpinned
+         by the theoretical work undertaken in the pre-print posted on [arXiv](https://arxiv.org/abs/2503.05111). In brief, by calculating
+         the sedimentation coefficient for nanosheets in a centrifugal field, the seperation of different sized nanosheets can be predicted.
+         This tool uses that sedimentation coefficient to predict the conditions require to achieve the same nanosheet size change for a different material, 
+         or a solvent system with different density and viscosity.
+
+         To use this tool, enter the previous experimental conditions on the left and desired new conditions on the right.
+         The angular velocity and time required to match the previous conditions will be displayed at the bottom.
+
+         To correct for different centrifuge rotor dimensions, use the 'Changing Rotor Dimensions' tool.
+         """)
 
 st.subheader('Experiment Calculator')
 st.write('To match experiment conditions, select the conditions from the previous, old experiment to be matched and \
@@ -84,8 +75,8 @@ else:
     density_material2 = prop.MATERIALS[material2][0]
     thickness_material2 = prop.MATERIALS[material2][1]
 
-temp1 = col1.slider('Temperature (use left/right arrow keys for fine adjustment', min_value=5, max_value=50, key='temperature1')
-temp2 = col2.slider('Temperature (use left/right arrow keys for fine adjustment', min_value=5, max_value=50, key='temperature2')
+temp1 = col1.slider('Temperature / $^o C$', min_value=5, max_value=50, key='temperature1')
+temp2 = col2.slider('Temperature / $^o C$', min_value=5, max_value=50, key='temperature2')
 solvent1 = col1.selectbox('Solvent', solvent_list, key='oldsolvent')
 solvent2 = col2.selectbox('Solvent', solvent_list, key='newsolvent')
 
@@ -97,8 +88,8 @@ elif solvent1 == 'Other':
     viscosity1 = col1.number_input('Viscosity of Custom Solvent in $cP$', key='solvisc1')/1000
 elif solvent1 == 'IPA:Water Mixture':
     composition1 = col1.slider('Weight Content of Alcohol', min_value=0.0, max_value=1.0, value=0.5, key='composition1')
-    density1 = prop.mixed_property_function(composition1, temp1, IPAWaterDensity)*1000
-    viscosity1 = prop.mixed_property_function(composition1, temp1, IPAWaterViscosity)/1000
+    density1 = prop.mixed_property_function(composition1, temp1, 'Density')*1000
+    viscosity1 = prop.mixed_property_function(composition1, temp1, 'Viscosity')/1000
 else:
     density1 = prop.solvent_density(temp1, solvent1)
     viscosity1 = prop.solvent_viscosity(temp1, solvent1)
@@ -111,8 +102,8 @@ elif solvent2 == 'Other':
     viscosity2 = col2.number_input('Viscosity of Custom Solvent in $cP$', key='solvisc2')/1000
 elif solvent2 == 'IPA:Water Mixture':
     composition2 = col2.slider('Weight Content of Alcohol', min_value=0.0, max_value=1.0, value=0.5, key='composition2')
-    density2 = prop.mixed_property_function(composition2, temp2, IPAWaterDensity)*1000
-    viscosity2 = prop.mixed_property_function(composition2, temp2, IPAWaterViscosity)/1000
+    density2 = prop.mixed_property_function(composition2, temp2, 'Density')*1000
+    viscosity2 = prop.mixed_property_function(composition2, temp2, 'Viscosity')/1000
 else:
     density2 = prop.solvent_density(temp2, solvent2)
     viscosity2 = prop.solvent_viscosity(temp2, solvent2)
@@ -133,7 +124,7 @@ rpm2 = w2*60/(2*np.pi)
 
 speed_match_rads = speed_equivalence(time1, w1, viscosity1, time1, viscosity2, density_material1, density_material2, density1, density2)
 speed_match = speed_match_rads*60/(2*np.pi)
-st.markdown(f'__Speed needed to match same time : {speed_match:.0f} rpm__')
+st.markdown(f'__Speed needed to match previous time : {speed_match:.0f} rpm__')
 
 fig, ax = plt.subplots()
 line, = ax.plot(time2, rpm2)
@@ -143,10 +134,13 @@ ax.set_ylabel('Angular velocity / rpm')
 fig_html = mpld3.fig_to_html(fig)
 components.html(fig_html, height=600)
 
+st.caption('Since centrifuge time and angular velocity are linked, any combination of time and speed along the plotted line can be used to match the previous experiment.')
+
 st.markdown("""
             ### References
             *Solvent density and viscosity at varying temperatures are calculated 
             from linear and Arrhenius fits respectively from large data sets 
-            downloaded from Reaxys. Full data sets and constants found on GitHub.*\n
+            downloaded from Reaxys. Full data sets and constants found on [GitHub](https://github.com/S-Goldie/Centriview).*
+            
             *Material data taken from cif files available on ICSD; thermal expansion assumed negligible.*
             """)
