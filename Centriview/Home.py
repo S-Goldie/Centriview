@@ -25,7 +25,7 @@ st.markdown("""
             4. Fraction Population Prediction - this tool allows you to visualise the change in flake size distribution for a given experiment.
             """)
 
-st.image('flakes_falling.png', width=360)
+st.image('https://github.com/S-Goldie/Centriview/blob/main/Centriview/flakes_falling.png', width=360)
 st.markdown("""
             ### Want to know more?
             - The equations and full discussion are published at [arXve](https://arxiv.org/abs/2503.05111). If
