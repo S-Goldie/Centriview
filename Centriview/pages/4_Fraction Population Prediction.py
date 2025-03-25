@@ -66,16 +66,15 @@ def cutoff_area(layer_number, time_hour, rpm, r1, r2):
     return (((np.log(r2 / r1) * (12 * n * np.cbrt(3 / (4 * np.pi))) / (time_s * w * w * (h * (pNS - pL) + 2 * d0 * (pS - pL)))) ** 2) * 1e18)
 
 ##_FRONT END_##
-st.title('Modelling Centrifugation of 2D Nanomaterials')
-st.subheader('CONFIDENTIAL')
-st.markdown('_No information contained herein to be shared outside EU Project: 2D-PRINTABLE – GA No: 101135196_')
+st.title('Fraction Population Prediction')
+
 st.write("""
          This interactive tool allows you to visualise the changes to a 
          nanomaterial during centrifugation. By changing the experiment parameters 
          like rpm, centrifuge time and rotor dimensions the live plots will display 
          the relative population function according to flake size for a sample 
-         collected between the two speeds, assuming all other conditions are kept 
-         constant. For more information on this see the Theoretical Discussion page.\n
+         collected between the two speeds. For more information on this see the Theoretical Discussion page.
+
          Other materials are possible if the key constants are known. Note the 
          importance of entering values according to the correct units.
          """)
@@ -107,8 +106,8 @@ elif solvent == 'Other':
     n = st.number_input('Viscosity of Custom Solvent in $cP$', key='solvisc1')/1000
 elif solvent == 'IPA:Water Mixture':
     composition = st.slider('Weight Content of Alcohol', min_value=0.0, max_value=1.0, value=0.5, key='composition2')
-    pL = prop.mixed_property_function(composition, temp, IPAWaterDensity)*1000
-    n = prop.mixed_property_function(composition, temp, IPAWaterViscosity)/1000
+    pL = prop.mixed_property_function(composition, temp, 'Density')*1000
+    n = prop.mixed_property_function(composition, temp, 'Viscosity')/1000
 else:
     pL = prop.solvent_density(temp, solvent)
     n = prop.solvent_viscosity(temp, solvent)
@@ -122,8 +121,8 @@ st.markdown(f'Hours: {time_hour:.1f} *(adjusted in minutes)*')
 
 st.markdown('''*Supernatant should be lower than sediment. See Discussion for scheme of intended cascade*''')
 col1, col2 = st.columns(2)
-rpm_lower = col1.slider('Select rpm of supernatant retention (use left/right arrow keys for fine adjustment)', min_value=100, max_value=30000)
-rpm_higher = col2.slider('Select rpm of sedimentation retention (use left/right arrow keys for fine adjustment)', min_value=100, max_value=30000)
+rpm_lower = col1.slider('Select rpm of supernatant retention', min_value=100, max_value=40000)
+rpm_higher = col2.slider('Select rpm of sedimentation retention', min_value=100, max_value=40000)
 
 #Define the plot parameters and apply the model to the plot
 dummy_layer_numbers = np.arange(start=0.5, stop=20.1, step=0.1)
