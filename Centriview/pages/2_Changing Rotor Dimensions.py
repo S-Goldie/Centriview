@@ -200,16 +200,16 @@ with st.expander("Click for more information on the experiment matching"):
         should produce the same thickness and flake size as the original centrifuge process, accounting for differences in material 
         and solvent properties, and centrifuge hardware available.
                 
-        The function describing the _change_ in nanosheet size distribution following the different centrifuge processes can be visualised
-        as a 2D contour plot - remembering that the true form of the function describing the centrifuge process is a 3D plot describing the relative 
-        population remaining as a function of _area_ and _thickness_. By plotting $\langle N \rangle$ and $\sqrt{LW}$ and on the $x$ and $y$ axes respectively,
-        the relative population change is shown by contour lines.
+        However, in most cases it is not possible to exactly match the nanosheet movement between 
+        experiments for all nanosheet sizes. This is especially notable for materials with very 
+        different layer thicknesses, because we are trying to optimise for separatoin according 
+        to layer number and flake area.
                 
-        The two different experiments compared above, original and optimised, are shown in different colours (:blue[blue] and :red[red] respectively). For a perfectly 
-        matched experiment, the two plots would be identical. The closer the lines, the closer the match and regions where the lines diverge indicate 
-        flake sizes that will behave differently in the different centrifuge conditions. _Note: if comparing materials with different layer thicknesses, 
-        thin flakes will diverge due to comparing layer number instead of flake height._
-         """)
+        To visualise the quality of the solution, the percentage difference between the two functions 
+        is plotted below for all nanosheet sizes. This heatmap identifies combinations of flake size 
+        and thickness that have greater or lesser errors between the experiments.
+        """)
+    
     difference_matrix = np.abs(fraction_matrix1 - fraction_matrix2)
     
     fig1, ax1 = plt.subplots()
@@ -220,7 +220,6 @@ with st.expander("Click for more information on the experiment matching"):
     plt.tight_layout()
     st.pyplot(fig1)
     st.caption('''
-        Two overlaid contour plots each showing the functions describing the change in nanosheet size distribution following the two processes. The :blue[original] 
-        and :red[optimised] experiments are plotted separately. The closer the lines, the more similar the nanosheets resulting from the two processes will be. 
-        This plot is intended to provide a visual guide to the optimisation, and limits therein.
+        A heat map of the percentage difference between the two experiments. Regions of greater 
+        error are shown in lighter colours, whilst zero error is left blank.
         ''')

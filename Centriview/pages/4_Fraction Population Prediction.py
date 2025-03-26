@@ -24,6 +24,7 @@ parent_dir = os.path.dirname(current_dir)
 
 sys.path.append(parent_dir)
 import properties as prop
+from mpl_toolkits.mplot3d import Axes3D
 
 pS = 1595           #surfactant layer density, from Hirsham using anhydrous cholate on surface
 d0 = 4.25E-10       #surfactant layer thickness, from Hirsham
@@ -154,14 +155,6 @@ Z = (1-f2)*f1
 
 #cutoff_values = [cutoff_area(m, time_hour, rpm_higher, r1, r2) for m in dummy_layer_numbers]
     
-mplstyle.use('fast')
-fig1, ax1 = plt.subplots()
-CS = ax1.contour(X, Y, Z, 6, cmap=cm.coolwarm)
-ax1.set(xlim=(0, 20), ylim=(0, 1500),  xlabel="Layer Number", ylabel="Lateral Size / nm")
-if aspect_flag == True:
-    ax1.plot(dummy_layer_numbers, aspect_ratio_lengths, linestyle='--', linewidth=1, color='grey')
-plt.tight_layout()
-
 st.subheader('Flake Size Probability Distribution')
 st.markdown('''
             Using the experimental parameters entered above, the plots below show the _change_ in population 
@@ -196,10 +189,10 @@ elif aspect_flag == True:
     f2_linear = fraction_linear(dummy_layer_numbers, time_hour, rpm_higher)
     f2_sed = (1-f2_linear)*f1_linear
     
-    fig2, ax2 = plt.subplots()
-    ax2.set(xlim=(0,20), xlabel="Layer Number", ylabel="% Population Remaining")
-    ax2.plot(dummy_layer_numbers, f2_sed*100, color='grey', linestyle='--')
-    st.pyplot(fig2)
+    fig3, ax3 = plt.subplots()
+    ax3.set(xlim=(0,20), xlabel="Layer Number", ylabel="% Population Remaining")
+    ax3.plot(dummy_layer_numbers, f2_sed*100, color='grey', linestyle='--')
+    st.pyplot(fig3)
     st.caption('''
                A line plot showing the population change function using common aspect-ratio's
                known for liquid-phase exfoliated nanosheets to reduce the dimensionality.$^{[1]}$
@@ -225,7 +218,17 @@ with st.expander("See more information on 2D contour plot"):
               
          """)
 
+#Plot the 2D contour plot
+mplstyle.use('fast')
+fig1, ax1 = plt.subplots()
+CS = ax1.contour(X, Y, Z, 6, cmap=cm.coolwarm)
+ax1.set(xlim=(0, 20), ylim=(0, 1500),  xlabel="Layer Number", ylabel="Lateral Size / nm")
+if aspect_flag == True:
+    ax1.plot(dummy_layer_numbers, aspect_ratio_lengths, linestyle='--', linewidth=1, color='grey')
+plt.tight_layout()
 st.pyplot(fig1)
+
+
 st.caption(r'''
            Contour plot of the 3D surface that describes the nanosheet population remaining as defined by 
            both lateral size, $\sqrt{LW}$, and layer number $N$. Within the orange bounds, the highest population 
