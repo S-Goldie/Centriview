@@ -59,8 +59,9 @@ def difference_optimisation(target_rpm):
 ###FRONT END###
 
 st.title('Consistent Separation with Different Rotors')
+st.markdown('## Beta - This page is still in Development')
 
-st.markdown('This calculation tool is designed to compare the seperation expected during a centrifugation process, \
+st.markdown('This calculation tool is designed to compare the separation expected during a centrifugation process, \
         and find the most suitable conditions to replicate that using different parameters including different rotors and filling heights. \
         This final point is significant because an exact experimental equivalence can only be defined when the ratio of $R_1$ to $R_2$ \
         are equal between experiments. When different rotor geometery and fill heights are used only an approximate solution can be found.')
@@ -157,33 +158,7 @@ st.write("The plots below show the difference between the two experimental condi
 fraction_matrix1 = supernatant_fraction_arrays(dummy_layer_numbers, dummy_lateral_size, time_min, previous_rpm, parameters1)
 fraction_matrix2 = supernatant_fraction_arrays(dummy_layer_numbers, dummy_lateral_size, time_min, optimal_rpm, parameters2)
 
-fig1, ax1 = plt.subplots()
-CS1 = ax1.contour(X, Y, fraction_matrix1, 10, cmap='Blues')
-ax1.clabel(CS1, inline=1, fontsize=10)
-CS2 = ax1.contour(X, Y, fraction_matrix2, 10, cmap='Reds')
-ax1.clabel(CS2, inline=1, fontsize=10)
-ax1.set(xlim=(0, 15), ylim=(0, 1500),  xlabel="Layer Number", ylabel="Lateral Size / nm")
-#ax1.plot(dummy_layer_numbers, aspect_ratio_lengths1, linestyle='--', linewidth=1, color='blue', label='Original Experiment')
-#ax1.plot(dummy_layer_numbers, aspect_ratio_lengths2, linestyle='--', linewidth=1, color='red', label='Closest Matched Experiment')
-#plt.legend()
-plt.tight_layout()
-st.pyplot(fig1)
-st.caption('''
-    A contour plot showing the difference in seperation of each flake size between the two experiments. The blue contour lines
-    show the fraction remaning of each flake size from the original experiment whilst the red lines show the optimised match.
-    The closer the lines, the closer the match in experimental conditions.
-    ''')
-with st.expander("See more information"):
-    st.markdown("""
-         The change in nanosheet distribution following the different centrifuge 
-         processes are shown as 2D contour plots in different colours (showing thickness and lateral
-         sizes independently). This function should be considered the _change_ in nanosheet population
-         following centrifugation.
-                
-        For a perfectly matched experiment, the two plots would be identical. The closer the lines, the closer the match. 
-        However, if different materials were selected the differenece in monolayer thickness will cause a mismatch in layer number.
-         """)
-st.write("Given a maximum achievable rotation speed, the minimum time required can be identified")
+
 max_rpm = st.number_input('Maximum rpm:', value = previous_rpm)
 
 time2 = np.arange(10, 540, 1)
@@ -191,6 +166,12 @@ rpm2 = np.sqrt(optimal_rpm**2 * time_min / time2)
 optimal_time = optimal_rpm**2 * time_min / max_rpm**2
 
 st.markdown(f"__Optimal time at maximum rpm to match the original experiment as entered above: {int(optimal_time)} min__")
+
+st.caption('''
+    The relationship between rpm and time is such that both can be changed together while still producing the same experimental result.
+    In this case, the user can manipulate the plot to find the desired balance between rotation time and speed. Given a maximum rpm above, 
+    the required experimental time is also shown.
+    ''')
 
 fig2, ax2 = plt.subplots()
 ax2.set(xlim=(0,540), xlabel="Time / min", ylabel="Angular velocity / rpm")
@@ -203,8 +184,42 @@ ax2.plot([optimal_time, optimal_time], [max_rpm*0.8, max_rpm*1.2], color='grey',
 fig_html = mpld3.fig_to_html(fig2)
 components.html(fig_html, height=600)
 
-st.caption('''
-    The relationship between rpm and time is such that both can be changed together while still producing the same experimental result.
-    In this case, the user can manipulate the plot to find the desired balance between rotation time and speed. Given a maximum rpm above, 
-    the required experimental time is also shown.
-    ''')
+
+with st.expander("Click for more information on the experiment matching"):
+    st.markdown("""
+        ### Overview of how the experiment matching works
+         To match different centrifuge experiments with so many changes, an analytical solution is not possible. 
+        Instead, we model the change in population of different nanosheet sizes caused by the original centrifuge experiment. 
+        The same calculation is then performed to identify the population change of different sized nanosheets following the 
+        new centrifuge conditions proposed. This population change is mathematically defined by the function introduced on the Theoretical Discussion page.
+        """)
+    st.page_link("pages/3_Theoretical Discussion.py", label="Theoretical Discussion", icon="📃")
+    st.markdown(r"""
+        By iterating over different experimental conditions, a solution can be found that minimises the difference between these two 
+        functions over a wide range of relevant nanosheet sizes. In other words, this solution describes the experimental condition that 
+        should produce the same thickness and flake size as the original centrifuge process, accounting for differences in material 
+        and solvent properties, and centrifuge hardware available.
+                
+        However, in most cases it is not possible to exactly match the nanosheet movement between 
+        experiments for all nanosheet sizes. This is especially notable for materials with very 
+        different layer thicknesses, because we are trying to optimise for separatoin according 
+        to layer number and flake area.
+                
+        To visualise the quality of the solution, the percentage difference between the two functions 
+        is plotted below for all nanosheet sizes. This heatmap identifies combinations of flake size 
+        and thickness that have greater or lesser errors between the experiments.
+        """)
+    
+    difference_matrix = np.abs(fraction_matrix1 - fraction_matrix2)
+    
+    fig1, ax1 = plt.subplots()
+    masked_difference_matrix = np.ma.masked_where(difference_matrix == 0, difference_matrix) * 100
+    heatmap = ax1.imshow(masked_difference_matrix, extent=[X.min(), X.max(), Y.min(), Y.max()], origin='lower', aspect='auto', cmap='viridis')
+    fig1.colorbar(heatmap, ax=ax1, label=r'% Error')
+    ax1.set(xlim=(0, 15), ylim=(0, 1500), xlabel="Layer Number", ylabel="Lateral Size / nm")
+    plt.tight_layout()
+    st.pyplot(fig1)
+    st.caption('''
+        A heat map of the percentage difference between the two experiments. Regions of greater 
+        error are shown in lighter colours, whilst zero error is left blank.
+        ''')
