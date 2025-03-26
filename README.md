@@ -7,7 +7,7 @@ The theoretical basis and experimental data underpinning these tools are current
 * Experimental data files from cascade centrifuge experiments.
 * Solvent data repository for density and viscosity calculations.
 
-The Centriview tool is more suitable as a deployed webapp, _coming soon_. However, the source code is available here.
+The Centriview tool is more suitable as a deployed webapp, now publically available [here](https://centriview.streamlit.app/). However, the source code is available here.
 Additional features may be explored as branches while a stable deployment will be maintained in the `main` branch.
 
 
