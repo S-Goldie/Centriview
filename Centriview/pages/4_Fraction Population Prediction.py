@@ -7,11 +7,8 @@ Created on Tue Sep 19 00:41:12 2023
 
 import streamlit as st
 import streamlit.components.v1 as components
-import matplotlib.pyplot as plt
-from matplotlib import cm
-import matplotlib.style as mplstyle
 import numpy as np
-import mpld3
+import plotly.graph_objects as go
 
 
 ##_BACKEND DATA_##
@@ -189,24 +186,30 @@ elif aspect_flag == True:
     f2_linear = fraction_linear(dummy_layer_numbers, time_hour, rpm_higher)
     f2_sed = (1-f2_linear)*f1_linear
     
-    fig3, ax3 = plt.subplots()
-    ax3.set(xlim=(0,20), xlabel="Layer Number", ylabel="% Population Remaining")
-    ax3.plot(dummy_layer_numbers, f2_sed*100, color='grey', linestyle='--')
-    st.pyplot(fig3)
+    fig3 = go.Figure()
+    fig3.add_trace(go.Scatter(x=dummy_layer_numbers, y=f2_sed*100, mode='lines', line=dict(color='grey', dash='dash')))
+    fig3.update_layout(
+        xaxis_title="Layer Number",
+        yaxis_title="% Population Remaining",
+        xaxis=dict(range=[0, 20]),
+        template="plotly_white"
+    )
+    st.plotly_chart(fig3)
+
     st.caption('''
                A line plot showing the population change function using common aspect-ratio's
                known for liquid-phase exfoliated nanosheets to reduce the dimensionality.$^{[1]}$
                This fixed aspect ratio is plotted as a dashed grey line on the contour plot below. 
                ''')
     
-with st.expander("See more information on 2D contour plot"):
+with st.expander("See more information and to view 3D plot"):
     st.markdown("""
         For nanosheets prepared by other techniques, the flake area and thickness may not be related 
         by the same aspect-ratios as known for liquid phase exfoliation samples. In this case, the full 
         3D surface describing the percentage of flakes remaining as a function of lateral size and thickness, 
         as separate variables, is a more accurate description.   
                     
-        To make such 3D surfaces readable, they are shown here as 2D contour plots. In regions beyond the dark 
+        To more easily read such 3D surfaces, they are also shown here as 2D contour plots. In regions beyond the dark 
         blue lines, no flakes of such size will remain after centrifugation, while inside the two orange 
         contour lines the highest population will be retained. (If only one orange line is shown, the speeds 
         selected are too low to remove the largest flakes.)
@@ -216,24 +219,58 @@ with st.expander("See more information on 2D contour plot"):
         line through the contour plot. The peak, corresponding to the highest population remaining, should fall 
         within the boundaries of the orange lines whilst the function decays to zero beyond the blue boundaries.
               
-         """)
+        """)
+    
+    fig3d = go.Figure(data=[go.Surface(
+        z=Z*100,
+        x=X,
+        y=Y,
+        colorscale='Viridis',
+        showscale=False
+    )])
+    fig3d.update_layout(
+        scene=dict(
+            xaxis_title="Layer Number",
+            yaxis_title="Lateral Size / nm",
+            zaxis_title="% Remaining",
+        ),
+        title="3D Surface Plot"
+    )
+    st.plotly_chart(fig3d)
 
-#Plot the 2D contour plot
-mplstyle.use('fast')
-fig1, ax1 = plt.subplots()
-CS = ax1.contour(X, Y, Z, 6, cmap=cm.coolwarm)
-ax1.set(xlim=(0, 20), ylim=(0, 1500),  xlabel="Layer Number", ylabel="Lateral Size / nm")
-if aspect_flag == True:
-    ax1.plot(dummy_layer_numbers, aspect_ratio_lengths, linestyle='--', linewidth=1, color='grey')
-plt.tight_layout()
-st.pyplot(fig1)
+    st.caption(r"""
+               3D surface plot showing the fraction of nanosheets remaining in the supernatant after the two 
+               centrifuge steps described above, as defined by both lateral size, $\sqrt{LW}$, and layer 
+               number $N$. The dark purple region indicates flakes so large they are completely removed by 
+               the first centrifuge process, while the decay at small flake sizes shows flakes so small they 
+               are not appreciably concentrated by even the higher speed.
 
+               """)
 
+fig = go.Figure(data=go.Contour(
+    z=Z*100,
+    x=dummy_layer_numbers,
+    y=dummy_lateral_size,
+    colorscale='Viridis',
+    contours=dict(showlabels=True),
+    showscale=True,
+    colorbar=dict(title="% Remaining")
+))
+fig.update_layout(
+    xaxis_title="Layer Number",
+    yaxis_title="Lateral Size / nm",
+    title="2D Contour Plot"
+)
+st.plotly_chart(fig)
 st.caption(r'''
            Contour plot of the 3D surface that describes the nanosheet population remaining as defined by 
-           both lateral size, $\sqrt{LW}$, and layer number $N$. Within the orange bounds, the highest population 
-           remains after centrifuging while the blue lines indicate the lowest boundary where relatively few flakes will remain.
-    ''')
+           both lateral size, $\sqrt{LW}$, and layer number $N$. A 3D surface plot is available within the 
+           information panel above. The dark purple region indicates flakes so large they are completely removed by 
+           the first centrifuge process. The contour lines of changing color represent the gradient of the surface 
+           where changing flake size is having a large influence on the population remaining. For most experimental 
+           conditions, a yellow curve is likely observed. This represents the combination of flake thickness and 
+           lateral size that is most concentrated by the selected centrifuge conditions.
+           ''')
 
 st.markdown("""
             ### References

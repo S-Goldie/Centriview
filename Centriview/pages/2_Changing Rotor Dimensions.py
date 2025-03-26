@@ -7,12 +7,13 @@ Created on Sat Jan 27 16:30:53 2024
 
 import streamlit as st
 import streamlit.components.v1 as components
-import matplotlib.pyplot as plt
-from matplotlib import cm
-import matplotlib.style as mplstyle
+#import matplotlib.pyplot as plt
+#from matplotlib import cm
+#import matplotlib.style as mplstyle
 import numpy as np
 from scipy.optimize import minimize
-import mpld3
+#import mpld3
+import plotly.graph_objects as go
 
 ###BACK END###
 
@@ -173,16 +174,22 @@ st.caption('''
     the required experimental time is also shown.
     ''')
 
-fig2, ax2 = plt.subplots()
-ax2.set(xlim=(0,540), xlabel="Time / min", ylabel="Angular velocity / rpm")
-ax2.plot(time2, rpm2, color='k')
-ax2.plot([0, 540], [max_rpm, max_rpm], color='grey', linestyle='dashed')
-ax2.plot([optimal_time, optimal_time], [max_rpm*0.8, max_rpm*1.2], color='grey', linestyle='dashed')
-#ax2.axvline(optimal_time, ymin=0, ymax=1, color='grey', linestyle='dashed')
-#ax2.axhline(max_rpm, xmin=0, xmax=1, color='grey', linestyle='dashed')
+fig2 = go.Figure()
 
-fig_html = mpld3.fig_to_html(fig2)
-components.html(fig_html, height=600)
+fig2.add_trace(go.Scatter(x=time2, y=rpm2, mode='lines', name='RPM vs Time', line=dict(color='black')))
+fig2.add_trace(go.Scatter(x=[0, 540], y=[max_rpm, max_rpm], mode='lines', name='Max RPM', line=dict(color='grey', dash='dash')))
+fig2.add_trace(go.Scatter(x=[optimal_time, optimal_time], y=[max_rpm * 0.8, max_rpm * 1.2], mode='lines', name='Optimal Time', line=dict(color='grey', dash='dash')))
+
+fig2.update_layout(
+    xaxis_title="Time / min",
+    yaxis_title="Angular velocity / rpm",
+    xaxis=dict(range=[0, 540]),
+    yaxis=dict(range=[0, max_rpm * 1.2]),
+    showlegend=True,
+    template="plotly_white"
+)
+
+st.plotly_chart(fig2)
 
 
 with st.expander("Click for more information on the experiment matching"):
@@ -212,14 +219,26 @@ with st.expander("Click for more information on the experiment matching"):
     
     difference_matrix = np.abs(fraction_matrix1 - fraction_matrix2)
     
-    fig1, ax1 = plt.subplots()
-    masked_difference_matrix = np.ma.masked_where(difference_matrix == 0, difference_matrix) * 100
-    heatmap = ax1.imshow(masked_difference_matrix, extent=[X.min(), X.max(), Y.min(), Y.max()], origin='lower', aspect='auto', cmap='viridis')
-    fig1.colorbar(heatmap, ax=ax1, label=r'% Error')
-    ax1.set(xlim=(0, 15), ylim=(0, 1500), xlabel="Layer Number", ylabel="Lateral Size / nm")
-    plt.tight_layout()
-    st.pyplot(fig1)
+    fig1 = go.Figure(data=go.Heatmap(
+        z=difference_matrix * 100,
+        x=dummy_layer_numbers,
+        y=dummy_lateral_size,
+        colorscale='RdPu',
+        colorbar=dict(title='% Error')
+    ))
+
+    fig1.update_layout(
+        xaxis_title="Layer Number",
+        yaxis_title="Lateral Size / nm",
+        xaxis=dict(range=[1, 15]),
+        yaxis=dict(range=[100, 1500]),
+        template="plotly_white"
+    )
+    fig1.data[0].update(zmin=0.1, zmax=10)
+
+    st.plotly_chart(fig1)
+    
     st.caption('''
         A heat map of the percentage difference between the two experiments. Regions of greater 
-        error are shown in lighter colours, whilst zero error is left blank.
+        error are shown in darker colour.
         ''')

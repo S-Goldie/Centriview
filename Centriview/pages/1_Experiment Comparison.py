@@ -7,10 +7,8 @@ Created on Thu Jan 11 14:24:38 2024
 
 import streamlit as st
 import streamlit.components.v1 as components
-import matplotlib.pyplot as plt
 import numpy as np
-import mpld3
-from mpld3 import plugins
+import plotly.graph_objects as go
 
 ###BACK END###
 
@@ -126,13 +124,16 @@ speed_match_rads = speed_equivalence(time1, w1, viscosity1, time1, viscosity2, d
 speed_match = speed_match_rads*60/(2*np.pi)
 st.markdown(f'__Speed needed to match previous time : {speed_match:.0f} rpm__')
 
-fig, ax = plt.subplots()
-line, = ax.plot(time2, rpm2)
-ax.set_xlabel('Time / min')
-ax.set_ylabel('Angular velocity / rpm')
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=time2, y=rpm2, mode='lines', name='Angular Velocity'))
+fig.update_layout(
+    xaxis_title='Time / min',
+    yaxis_title='Angular velocity / rpm',
+    title='Angular Velocity vs Time',
+    height=600
+)
 
-fig_html = mpld3.fig_to_html(fig)
-components.html(fig_html, height=600)
+st.plotly_chart(fig)
 
 st.caption('Since centrifuge time and angular velocity are linked, any combination of time and speed along the plotted line can be used to match the previous experiment.')
 
