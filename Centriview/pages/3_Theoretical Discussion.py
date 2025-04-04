@@ -6,6 +6,42 @@ Created on Sat Jan 27 16:30:53 2024
 """
 
 import streamlit as st
+import numpy as np
+from streamlit import columns
+import plotly.graph_objects as go
+
+##Back End##
+#Import constants and define functions to make the example 3D plot
+layer_numbers = np.arange(0.5,20,0.04)
+areas = np.arange(5000, 500000, 1000)
+X, Y = np.meshgrid(layer_numbers, areas)
+
+#Current example parameters for WS2 in NMP centrifugation
+pL = 1028           #liquid density, assuming linear interpolation of light and heavy water at 36 oC
+pS = 1595           #surfactant layer density, from Hirsham using anhydrous cholate on surface
+d0 = 4.25E-10       #surfactant layer thickness, from Hirsham
+n = 2.3E-3        #viscosity, approximate value at temperature and mixture [J. Kestin, Viscosity of light and heavy water and their mixtures,Physica A: Statistical Mechanics and its Applications,Volume 134, Issue 1,1985]
+d1 = 6.18E-10       #monolayer of WS2, J. A. Wilson and A. D. Yoffe, Advances in Physics 18, 193 (1969).
+pNS = 7500          #structure density
+
+def supernatant_frac(areas, layer_number, time_hour, rpm):
+    "Return the fraction of a flake population remaning in the supernatant"
+    r1, r2 = 0.071, 0.1
+    time_s = 3600 * time_hour
+    h = layer_number * d1
+    w = (rpm * 2 * np.pi) / 60
+    a = time_s * w * w * (h * (pNS - pL) + 2 * d0 * (pS - pL )) * np.sqrt(areas * 1e-18) / (12 * n * np.cbrt(3 / (4 * np.pi)))
+    return max((r2*np.exp(-a)-r1)/(r2-r1), 0)
+
+vector_supernat = np.vectorize(supernatant_frac)
+
+f1 = vector_supernat(Y,X,2,1800)
+f2 = vector_supernat(Y,X,2,3600)
+
+Z = (1-f2)*f1
+
+## Front End ##
+#Display text and discussion
 
 st.title('Theoretical Discussion')
 
@@ -121,3 +157,57 @@ st.markdown("""
             and the sediment from this step is retained. In this way, as illustrated, the resulting relative population 
             function is the product ($F_L(\omega_1)F_s(\omega_2)$) of these sequential steps.
             """)
+
+st.subheader('Example 3D Plot')
+st.markdown("""
+            The following plots are examples of the 3D surface described by the equations above, linking the flake area 
+            and layer number to the fraction retained following a centrifuge cascade. If the initial, starting distribution 
+            is known, this surface should be applied to the starting distribution to accurately describe the resulting flake 
+            size distribution after the centrifuge processing.
+
+            Fortunately, for many experimentally prepared dispersions, the starting distribution is so wide that the change 
+            caused by the centrifuge is a dominant factor in the final distribution.
+            """)
+
+col1, col2 = st.columns(2)
+
+# 3D Surface Plot in the first column
+with col1:
+    fig3d = go.Figure(data=[go.Surface(
+        z=Z*100,
+        x=layer_numbers,
+        y=areas * 1e-6,
+        colorscale='Viridis',
+        showscale=False
+    )])
+    fig3d.update_layout(
+        scene=dict(
+            xaxis_title="Layer Numbers",
+            yaxis_title="Area / sq. microns",
+            zaxis_title="% Remaining",
+            zaxis=dict(range=[0, 100]),
+        ),
+        title="3D Surface Plot"
+    )
+    st.plotly_chart(fig3d)
+    st.caption("""Example 3D surface plot showing the fraction of nanosheets remaining in the supernatant after two centrifuge steps.
+            This example data is modelling WS$_2$, centrifuged in NMP for two hours at 1800 rpm from which the supernatant is retained, and then at 3600 rpm from which the sediment is retained.""")
+
+# 2D Contour Plot in the second column
+with col2:
+    fig = go.Figure(data=go.Contour(
+        z=Z,
+        x=layer_numbers,
+        y=areas * 1e-6,
+        colorscale='Viridis',
+        contours=dict(showlabels=True),
+        showscale=True,
+        colorbar=dict(title="% Remaining")
+    ))
+    fig.update_layout(
+        xaxis_title="Layer Numbers",
+        yaxis_title="Area / sq. microns",
+        title="2D Contour Plot"
+    )
+    st.plotly_chart(fig)
+    st.caption("""Example 2D contour plot showing the same data as the 3D surface plot. Due to simplicity of plotting and reading, the 2D contour plot is preferred for data visualisation.""")
