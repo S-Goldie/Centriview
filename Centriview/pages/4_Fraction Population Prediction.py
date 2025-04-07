@@ -21,7 +21,6 @@ parent_dir = os.path.dirname(current_dir)
 
 sys.path.append(parent_dir)
 import properties as prop
-from mpl_toolkits.mplot3d import Axes3D
 
 pS = 1595           #surfactant layer density, from Hirsham using anhydrous cholate on surface
 d0 = 4.25E-10       #surfactant layer thickness, from Hirsham
