@@ -70,7 +70,7 @@ st.latex(r'''S(h, A)=\frac{1}{12 \eta \sqrt[3]{\frac{3}{4 \pi}}} \sqrt[2]{A}(h(\
 
 
 st.markdown(
-'''Defining all parameters, rotor geometry illustrated below:
+r'''Defining all parameters, rotor geometry illustrated below:
 - $R_1 $ = axial distance from center of rotation to top of the liquid surface $/ m$
 - $R_2 $ = axial distance from center of rotation to bottom of the centrifuge tube $/ m$
 - $t $ = time $/ s$
@@ -91,7 +91,7 @@ st.image('https://github.com/S-Goldie/Centriview/blob/main/Centriview/radius_sch
 #Theoretical Discussion underpinning the experiment comparison
 st.subheader('Experiment Comparison Background')
 
-st.write("""Building on the expression introduced above, we can consider the 
+st.write(r"""Building on the expression introduced above, we can consider the 
          effective separation of nanosheets in two different experiments. Equating $F_{liq}$
          from the two experiments, conditions can be identified that produce 
          consistent nanosheet size distributions from both.""")
@@ -131,7 +131,7 @@ st.latex(r'''\boldsymbol{\omega_2} = \sqrt{\frac{t_1 \omega_1^2 \eta_2}{\boldsym
 
 #Theoretical Discussion explaining fraction populations
 st.subheader('Sediment Fraction Populations')
-st.markdown("""
+st.markdown(r"""
             The expression above is a relative population function of nanosheets 
             remaining in the supernatant liquid after a given centrifuge experiment.
             That is for every nanosheet size, $F_L(\omega)$ returns a number 
@@ -150,7 +150,7 @@ st.markdown("""
 st.image('https://github.com/S-Goldie/Centriview/blob/main/Centriview/cascade_scheme.png?raw=true', caption='Scheme of a three-step centrifuge process \
          highlighting the different fractions that are extracted by separation \
          of sediment and supernatant after each centrifuge step.')
-st.markdown("""
+st.markdown(r"""
             In the Fraction Population Prediction tool it is assumed that the 
             lower speed is used to remove the sediment, leaving only the supernatant 
             ($F_L(\omega_1)$) which is then centrifuged at higher speed ($\omega_2$) 
