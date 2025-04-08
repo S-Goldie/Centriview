@@ -25,7 +25,6 @@ parent_dir = os.path.dirname(current_dir)
 
 sys.path.append(parent_dir)
 import properties as prop
-#from mpl_toolkits.mplot3d import Axes3D
 
 pS = 1595           #surfactant layer density, from Hirsham using anhydrous cholate on surface
 d0 = 4.25E-10       #surfactant layer thickness, from Hirsham
@@ -207,7 +206,7 @@ elif aspect_flag == True:
                ''')
     
 with st.expander("See more information and to view 3D plot"):
-    st.markdown("""
+    st.markdown(r"""
         For nanosheets prepared by other techniques, the flake area and thickness may not be related 
         by the same aspect ratios as those known for liquid-phase exfoliation samples. In this case, the full 
         3D surface describing the percentage of flakes remaining as a function of lateral size and thickness, 
