@@ -9,6 +9,10 @@ import streamlit as st
 import streamlit.components.v1 as components
 import numpy as np
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+from matplotlib import cm
+import matplotlib.style as mplstyle
+import mpld3
 
 
 ##_BACKEND DATA_##
@@ -163,23 +167,23 @@ if aspect_flag == False:
 elif aspect_flag == True:
     with st.expander("See more information on the population function and linear plot"):
         st.markdown("""
-                The function calculated from the experimental parameters above describes the _change_ in 
-                nanosheet size distribution after centrifugation. A high percentage remaining indicates 
-                retention of nanosheets of that size, while a low percentage indicates they are likely 
-                to be discarded. By changing the experimental parameters it is possible to predict the 
-                effect of different centrifugation conditions. In a rigorous treatment, this function of 
-                centrifuge parameters and nanosheet sizes should be multiplied by the starting nanosheet size 
-                distribution to predict the final distribution. However, since this is very rarely known 
-                we simply plot the change that a given centrifuge process will cause.
-                    
-                To more easily visualize this change to the nanosheet size distribution, we can use the
-                most common aspect-ratios known for liquid-phase exfoliated nanosheets to reduce the 
-                dimensionality into a 1D line plot.$^{[1]}$
+            The function calculated from the experimental parameters above describes the _change_ in 
+            nanosheet size distribution after centrifugation. A high percentage remaining indicates 
+            retention of nanosheets of that size, while a low percentage indicates they are likely 
+            to be discarded. By changing the experimental parameters, it is possible to predict the 
+            effect of different centrifugation conditions. In a rigorous treatment, this function of 
+            centrifuge parameters and nanosheet sizes should be multiplied by the starting nanosheet size 
+            distribution to predict the final distribution. However, since this is very rarely known, 
+            we simply plot the change that a given centrifuge process will cause.
                 
-                In this plot, the population remaining in the final sediment after the two-step process
-                described above is shown as a function only of layer number, while the flake lateral 
-                area is a fixed aspect-ratio of thickness.
-                """)
+            To more easily visualize this change to the nanosheet size distribution, we can use the
+            most common aspect ratios known for liquid-phase exfoliated nanosheets to reduce the 
+            dimensionality into a 1D line plot.$^{[1]}$
+            
+            In this plot, the population remaining in the final sediment after the two-step process
+            described above is shown as a function only of layer number, while the flake lateral 
+            area is a fixed aspect ratio of thickness.
+            """)
     
     f1_linear = fraction_linear(dummy_layer_numbers, time_hour, rpm_lower)
     f2_linear = fraction_linear(dummy_layer_numbers, time_hour, rpm_higher)
@@ -202,73 +206,72 @@ elif aspect_flag == True:
                ''')
     
 with st.expander("See more information and to view 3D plot"):
-    st.markdown("""
+    st.markdown(r"""
         For nanosheets prepared by other techniques, the flake area and thickness may not be related 
-        by the same aspect-ratios as known for liquid phase exfoliation samples. In this case, the full 
+        by the same aspect ratios as those known for liquid-phase exfoliation samples. In this case, the full 
         3D surface describing the percentage of flakes remaining as a function of lateral size and thickness, 
         as separate variables, is a more accurate description.   
                     
-        To more easily read such 3D surfaces, they are also shown here as 2D contour plots. In regions beyond the dark 
-        blue lines, no flakes of such size will remain after centrifugation, while inside the two orange 
-        contour lines the highest population will be retained. (If only one orange line is shown, the speeds 
-        selected are too low to remove the largest flakes.)
+        To more easily render such 3D surfaces as the conditions are changed, they are shown here as 2D contour plots.
+        As described in the caption, to read these 2D plots, the regions beyond the dark blue lines correspond 
+        to the dark purple regions of the 3D plot where the flake population is zero. No flakes of such size will 
+        remain after centrifugation. Inside the two orange contour lines, the highest population will be retained.
+        (If only one orange line is shown, the speeds selected are too low to remove the largest flakes.)
                 
         To more easily understand this plot, it can be useful to refer to the line plot above. This follows 
-        the 3D surface over a path described by fixed aspect ratios. This path is shown as the grey dashed
+        the 3D surface over a path described by fixed aspect ratios, shown as the grey dashed
         line through the contour plot. The peak, corresponding to the highest population remaining, should fall 
-        within the boundaries of the orange lines whilst the function decays to zero beyond the blue boundaries.
-              
+        within the boundaries of the orange lines, while the function decays to zero beyond the blue boundaries.
+                
+        Fully interactive example 3D surface and contour plots are also shown on the Theoretical Discussion page.
         """)
     
-    fig3d = go.Figure(data=[go.Surface(
-        z=Z*100,
-        x=X,
-        y=Y,
-        colorscale='Viridis',
-        showscale=False
-    )])
-    fig3d.update_layout(
-        scene=dict(
-            xaxis_title="Layer Number",
-            yaxis_title="Lateral Size / nm",
-            zaxis_title="% Remaining",
-        ),
-        title="3D Surface Plot"
-    )
-    st.plotly_chart(fig3d)
+    if st.button("Generate 3D Surface Plot"):
+        fig3d = go.Figure(data=[go.Surface(
+            z=Z*100,
+            x=X,
+            y=Y,
+            colorscale='Viridis',
+            showscale=False
+        )])
+        fig3d.update_layout(
+            scene=dict(
+                xaxis_title="Layer Number",
+                yaxis_title="Lateral Size / nm",
+                zaxis_title="% Remaining",
+            ),
+            title="3D Surface Plot"
+        )
+        st.plotly_chart(fig3d)
 
-    st.caption(r"""
-               3D surface plot showing the fraction of nanosheets remaining in the supernatant after the two 
-               centrifuge steps described above, as defined by both lateral size, $\sqrt{LW}$, and layer 
-               number $N$. The dark purple region indicates flakes so large they are completely removed by 
-               the first centrifuge process, while the decay at small flake sizes shows flakes so small they 
-               are not appreciably concentrated by even the higher speed.
+        st.caption(r"""
+                   3D surface plot showing the fraction of nanosheets remaining in the supernatant after the two 
+                   centrifuge steps described above, as defined by both lateral size, $\sqrt{LW}$, and layer 
+                   number $N$. The dark purple region indicates flakes so large they are completely removed by 
+                   the first centrifuge process, while the decay at small flake sizes shows flakes so small they 
+                   are not appreciably concentrated by even the higher speed.
 
-               """)
+                   """)
 
-fig = go.Figure(data=go.Contour(
-    z=Z*100,
-    x=dummy_layer_numbers,
-    y=dummy_lateral_size,
-    colorscale='Viridis',
-    contours=dict(showlabels=True),
-    showscale=True,
-    colorbar=dict(title="% Remaining")
-))
-fig.update_layout(
-    xaxis_title="Layer Number",
-    yaxis_title="Lateral Size / nm",
-    title="2D Contour Plot"
-)
-st.plotly_chart(fig)
+mplstyle.use('fast')
+fig1, ax1 = plt.subplots()
+CS = ax1.contour(X, Y, Z, 6, cmap=cm.coolwarm)
+ax1.set(xlim=(0, 20), ylim=(0, 1500),  xlabel="Layer Number", ylabel="Lateral Size / nm")
+if aspect_flag == True:
+    ax1.plot(dummy_layer_numbers, aspect_ratio_lengths, linestyle='--', linewidth=1, color='grey')
+plt.tight_layout()
+st.pyplot(fig1)
+
 st.caption(r'''
            Contour plot of the 3D surface that describes the nanosheet population remaining as defined by 
-           both lateral size, $\sqrt{LW}$, and layer number $N$. A 3D surface plot is available within the 
-           information panel above. The dark purple region indicates flakes so large they are completely removed by 
-           the first centrifuge process. The contour lines of changing color represent the gradient of the surface 
-           where changing flake size is having a large influence on the population remaining. For most experimental 
-           conditions, a yellow curve is likely observed. This represents the combination of flake thickness and 
-           lateral size that is most concentrated by the selected centrifuge conditions.
+           both lateral size, $\sqrt{LW}$, and layer number $N$. Regions outside the dark blue lines represent 
+           flakes so large they are completely removed by the first centrifuge process. The contour lines of 
+           changing color represent the gradient of the surface, where changing flake size has a large 
+           influence on the population remaining. The region containing the flakes that are more retained 
+           by the selected centrifuge experiment is enclosed by the darkest orange lines. 
+           This represents the combination of flake thickness and lateral size that is most concentrated.
+
+           _A 3D surface plot is available within the information panel above, but this may reduce performance._ 
            ''')
 
 st.markdown("""

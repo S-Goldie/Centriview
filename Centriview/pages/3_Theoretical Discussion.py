@@ -97,7 +97,7 @@ st.write("""Building on the expression introduced above, we can consider the
          consistent nanosheet size distributions from both.""")
 
 st.markdown('__Consistent Rotor Geometry__')
-st.markdown('Assuming a consistent geometry between experiments, that is the rotor and fill height remain unchanged, \
+st.markdown(r'Assuming a consistent geometry between experiments, that is the rotor and fill height remain unchanged, \
         then $R_1$ and $R_2$ become identical across experiments and only the sedimentation, $S \omega^2 t$, matters. For \
         identical separation this must also be equal. Using subscripts to denote the separation to be replicated (1) and the new\
         experiment (2) and cancelling all identical parameters ($\sqrt{A}$ and $12 \sqrt[3]{3/{4 \pi}}$) this becomes:')
