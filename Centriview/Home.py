@@ -34,6 +34,7 @@ st.markdown("""
             - The code and database for this webapp is made freely available and open-source 
             on [GitHub](https://github.com/S-Goldie/Centriview).
 
+            ---
             ### Disclaimer
             _This tool is made freely available under a creative 
             commons cc-by licence.  The licensor offers the licensed material 
@@ -45,7 +46,10 @@ st.markdown("""
             the presence or absence of errors, whether or not known or discoverable._
             
             _The tools and data files made available within this repository were 
-            supported by funding from the European Union (2D-PRINTABLE HE: 101135196)._
+            supported by funding from the European Union (2D-PRINTABLE HE: 101135196). 
+            Views and opinions expressed are however those of the author(s) only and do 
+            not necessarily reflect those of the European Union or the European Commission. 
+            Neither the European Union nor the granting authority can be held responsible for them._
             """)
 
-st.image('https://upload.wikimedia.org/wikipedia/commons/e/e0/Flag_of_Europe_color_with_border.svg', caption=None, width=254)
+st.image('https://2d-printable.eu/storage/sites/18/2023/02/Funding_statement-1-768x161.png', caption=None, width=254)

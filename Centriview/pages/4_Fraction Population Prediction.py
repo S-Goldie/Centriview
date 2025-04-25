@@ -282,3 +282,6 @@ st.markdown("""
             downloaded from Reaxys. Full data sets and constants found on GitHub.*\n
             *Material data taken from cif files available on ICSD; thermal expansion assumed negligible.*
             """)
+
+st.divider()
+st.image('https://2d-printable.eu/storage/sites/18/2023/02/Funding_statement-1-768x161.png', caption=None, width=254)
