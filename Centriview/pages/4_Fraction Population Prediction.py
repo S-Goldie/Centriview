@@ -12,7 +12,6 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import matplotlib.style as mplstyle
-import mpld3
 
 
 ##_BACKEND DATA_##
@@ -101,7 +100,7 @@ else:
 
 solvent = st.selectbox('Pick a solvent:',solvent_list)
 
-st.markdown("""
+st.markdown(r"""
          _Other materials and solvents can be entered manually if the key constants are known. Note the 
          importance of entering values according to the correct units._
          """)
@@ -131,7 +130,7 @@ r2 = st.number_input('$R_2$ - Radius from axis to top of the sediment in cm', va
 time_hour = st.slider('Select time in minutes (use left/right arrow keys for fine adjustment)', min_value=10, max_value=540, value=120) / 60
 st.markdown(f'Hours: {time_hour:.1f} h')
 
-st.markdown('''
+st.markdown(r'''
             This is intended to be a two-step process. The first, lower speed step is to 
             remove the sediment and then the second, higher speed step is to sediment the 
             desired material and discard the remaining supernatant.
@@ -166,7 +165,7 @@ if aspect_flag == False:
     st.write('''__For a new material with unknown aspect-ratios the 1D trend cannot be estimated.__''')
 elif aspect_flag == True:
     with st.expander("See more information on the population function and linear plot"):
-        st.markdown("""
+        st.markdown(r"""
             The function calculated from the experimental parameters above describes the _change_ in 
             nanosheet size distribution after centrifugation. A high percentage remaining indicates 
             retention of nanosheets of that size, while a low percentage indicates they are likely 
@@ -199,7 +198,7 @@ elif aspect_flag == True:
     )
     st.plotly_chart(fig3)
 
-    st.caption('''
+    st.caption(r'''
                A line plot showing the population change function using common aspect-ratio's
                known for liquid-phase exfoliated nanosheets to reduce the dimensionality.$^{[1]}$
                This fixed aspect ratio is plotted as a dashed grey line on the contour plot below. 
@@ -282,3 +281,6 @@ st.markdown("""
             downloaded from Reaxys. Full data sets and constants found on GitHub.*\n
             *Material data taken from cif files available on ICSD; thermal expansion assumed negligible.*
             """)
+
+st.divider()
+st.image('https://2d-printable.eu/storage/sites/18/2023/02/Funding_statement-1-768x161.png', caption=None, width=254)
