@@ -12,7 +12,6 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import matplotlib.style as mplstyle
-import mpld3
 
 
 ##_BACKEND DATA_##
