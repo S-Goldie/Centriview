@@ -77,9 +77,9 @@ r'''Defining all parameters, rotor geometry illustrated below:
 - $\omega $ = angular velocity $/ rad \space s^{-1}$
 - $N $ = number of layers
 - $d_1 $ = monolayer thickness $m$
-- $ \Delta \\rho_{NS} $ = difference in density between nanosheet and liquid $/ kg \space m^{-3}$
+- $ \Delta \rho_{NS} $ = difference in density between nanosheet and liquid $/ kg \space m^{-3}$
 - $d_0 $ = surfactant layer thickness $/ m$
-- $\Delta \\rho_S $ = difference in density between surfactant layer and liquid $/ kg \space m^{-3}$
+- $\Delta \rho_S $ = difference in density between surfactant layer and liquid $/ kg \space m^{-3}$
 - $L $ = nanosheet length $/ m$
 - $w $ = nanosheet width $/ m$
 - $\eta $ = liquid viscosity $/ kg \space m^{-1} \space s^{-1}$)
@@ -117,12 +117,12 @@ st.markdown('Dividing through by $h$ (we are looking for identical sedimentation
 
 st.latex(r'''\frac{t_1 \omega_1^2 \eta_2}{t_2 \omega_2^2 \eta_1}=\frac{\rho_{NS_2}-\rho_{L_2}}{\rho_{NS_1}-\rho_{L_1}}''')
 
-st.markdown('''where:
+st.markdown(r'''where:
 - $t$ = time
 - $\omega$ = angular velocity (rpm)
 - $\eta$ = viscosity
-- $\\rho_{NS}$ = density of nanosheets
-- $\\rho_l$ = density of solvent
+- $\rho_{NS}$ = density of nanosheets
+- $\rho_l$ = density of solvent
             
 To compare time (${t_2}$) and angular velocity ($\omega_2$), we plot the rearranged form of this expression:
 ''')
