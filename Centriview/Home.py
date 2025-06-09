@@ -6,6 +6,8 @@ Created on Sat Jan 27 15:33:08 2024
 """
 
 import streamlit as st
+import requests
+import streamlit.components.v1 as components
 
 st.title('Centriview')
 
@@ -53,3 +55,13 @@ st.markdown("""
             """)
 
 st.image('https://2d-printable.eu/storage/sites/18/2023/02/Funding_statement-1-768x161.png', caption=None, width=254)
+
+st.markdown('______________________')
+
+url = 'https://github.com/S-Goldie/Centriview/blob/main/Centriview/googled26d7796c8f64af4.html?raw=true'
+response = requests.get(url)
+if response.status_code == 200:
+    authorise_code = response.text
+    components.html(authorise_code, height=10)
+else:
+    st.error("Failed to load authentication HTML file.")
