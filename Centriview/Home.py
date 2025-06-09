@@ -62,6 +62,6 @@ url = 'https://github.com/S-Goldie/Centriview/blob/main/Centriview/googled26d779
 response = requests.get(url)
 if response.status_code == 200:
     authorise_code = response.text
-    components.html(authorise_code, height=10)
+    components.html(authorise_code, height=50)
 else:
     st.error("Failed to load authentication HTML file.")
