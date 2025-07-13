@@ -6,6 +6,8 @@ Created on Sat Jan 27 15:33:08 2024
 """
 
 import streamlit as st
+import requests
+import streamlit.components.v1 as components
 
 st.title('Centriview')
 

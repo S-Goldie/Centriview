@@ -60,7 +60,7 @@ st.title('Consistent Separation with Different Rotors')
 st.markdown('This calculation tool is designed to compare the separation expected during a centrifugation process, \
         and find the most suitable conditions to replicate that using different parameters including different rotors and filling heights. \
         This final point is significant because an exact experimental equivalence can only be defined when the ratio of $R_1$ to $R_2$ \
-        are equal between experiments. When different rotor geometery and fill heights are used only an approximate solution can be found.')
+        are equal between experiments. When different rotor geometry and fill heights are used only an approximate solution can be found.')
 
 st.subheader('Experiment Calculator')
 st.write("""
