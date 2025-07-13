@@ -76,7 +76,7 @@ st.write("""
          collected between the two speeds. For detailed information on this see the 
          Theoretical Discussion page or the accompanying publication available through the links below.
          """)
-st.page_link("pages/3_Theoretical Discussion.py", label="Theoretical Discussion", icon="📃")
+st.page_link("pages/5_Theoretical Discussion.py", label="Theoretical Discussion", icon="📃")
 st.page_link("https://arxiv.org/abs/2503.05111", label="Publication", icon="📜")
 
 st.subheader("Experimental Parameters")

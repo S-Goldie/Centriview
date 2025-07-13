@@ -9,6 +9,7 @@ euler = 2.718281828459045235360287471352
 ##_BACKEND DATA AND FUNCTIONS_##
 #Storage of parameters for calculations
 #"Keys" : ['Density / kg m-3', 'Layer Thickness / m', 'k1', 'k2']
+#k1 values of Black phosphorus and antimony are not currently known. Typical values used as estimates.
 MATERIALS = {
     "Graphene" :[2260, 3.35E-10, 2.5, 280],
     "WS2" :     [7500, 6.18E-10, 1.75, 46],
@@ -23,8 +24,8 @@ MATERIALS = {
     "CuOH2" :   [3370, 5E-10, 4.5, 21],
     "RuCl3" :   [3260, 6E-10, 1.6, 77],
     "CrTe3" :   [4700, 1.1E-9, 1.6, 14],
-    "Black Phosphorus" :    [2690, 5E-10],
-    "Antimony" :[6694, 5.63E-10]
+    "Black Phosphorus" :    [2690, 5E-10, 2.0],
+    "Antimony" :[6694, 5.63E-10, 2.0]
     }
 
 #"Keys" : ['density_m', 'density_c', 'viscosity_A', 'viscosity_Ea']
