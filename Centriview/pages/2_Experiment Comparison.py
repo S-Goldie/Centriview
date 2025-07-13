@@ -37,7 +37,7 @@ st.write("""
          This calculation tool is designed to predict the experimental conditions required to replicate a centrifuge
          experiment when using different solvents, materials or even different temperatures. These calculations are underpinned
          by the theoretical work undertaken in the pre-print posted on [arXiv](https://arxiv.org/abs/2503.05111). In brief, by calculating
-         the sedimentation coefficient for nanosheets in a centrifugal field, the seperation of different sized nanosheets can be predicted.
+         the sedimentation coefficient for nanosheets in a centrifugal field, the separation of different sized nanosheets can be predicted.
          This tool uses that sedimentation coefficient to predict the conditions require to achieve the same nanosheet size change for a different material, 
          or a solvent system with different density and viscosity.
 
