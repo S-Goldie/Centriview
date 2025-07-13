@@ -47,7 +47,7 @@ st.title('Theoretical Discussion')
 
 st.write("""
          The complete theoretical considerations are published in a pre-print available [here](https://arxiv.org/abs/2503.05111).
-         Here is given a basic overview to faciliate an understanding of the calculations being run.
+         Here is given a basic overview to facilitate an understanding of the calculations being run.
 
          The speed at which a nanosheet sinks in a centrifugal field can be defined from its size. 
          The relative movement of each size of nanosheet can be then compared to the tube dimensions. For a uniform starting distribution, 
