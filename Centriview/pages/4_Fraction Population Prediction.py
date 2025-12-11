@@ -88,7 +88,7 @@ if material == 'Other':
     pNS = st.number_input('Density of Custom Material in $g$ $cm^{-3}$', key='matdensity1', value=2.0) * 1000
     d1 = st.number_input('Monolayer thickness from unit cell in Å', key='matthickness', value=3.0) * 1E-10
     aspect_flag = False
-elif len(prop.MATERIALS[material]) > 2:
+elif len(prop.MATERIALS[material]) > 3:
     pNS = prop.MATERIALS[material][0]
     d1 = prop.MATERIALS[material][1]
     k1 = prop.MATERIALS[material][2]
@@ -285,3 +285,4 @@ st.markdown("""
 
 st.divider()
 st.image('https://2d-printable.eu/storage/sites/18/2023/02/Funding_statement-1-768x161.png', caption=None, width=254)
+

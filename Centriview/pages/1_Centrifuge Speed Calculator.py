@@ -43,7 +43,7 @@ Centrifugation can only select flakes already present within a sample, and the t
          the size separation see:
 """)
 st.page_link("pages/4_Fraction Population Prediction.py", label="Size Selection Visualisation", icon="📊")
-st.markdown('For a more comprehensive discussion see see the Theoretical Discussion page or the accompanying publication available through the links below.')
+st.markdown('For a more comprehensive discussion see the Theoretical Discussion page or the accompanying publication available through the links below.')
 st.page_link("pages/5_Theoretical Discussion.py", label="Theoretical Discussion", icon="📃")
 st.page_link("https://arxiv.org/abs/2503.05111", label="Publication", icon="📜")
 
@@ -96,7 +96,7 @@ r1 = col1.number_input('$R_1$ - Radius from axis to top of the liquid in mm', va
 r2 = col2.number_input('$R_2$ - Radius from axis to top of the sediment in mm', value=100.0)/1000
 
 
-st.markdown('Enter the desired nanosheet size. Remember the estimation will only work for nanosheets that are are present in a significant population in the starting dispersion.')
+st.markdown('Enter the desired nanosheet size. Remember the estimation will only work for nanosheets that are present in a significant population in the starting dispersion.')
 col3, col4 = st.columns(2)
 target_N = col3.number_input('Desired nanosheet layer number', key='target_thickness', step=1)
 target_L = col4.number_input('Desired nanosheet length in nm', key='target_length')*1E-9
