@@ -83,6 +83,7 @@ st.subheader("Experimental Parameters")
     
 #Input user parameters
 material = st.selectbox('Pick a material:', materials_list)
+
 if material == 'Other':
     pNS = st.number_input('Density of Custom Material in $g$ $cm^{-3}$', key='matdensity1', value=2.0) * 1000
     d1 = st.number_input('Monolayer thickness from unit cell in Å', key='matthickness', value=3.0) * 1E-10
