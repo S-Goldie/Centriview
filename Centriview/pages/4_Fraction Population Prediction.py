@@ -77,13 +77,12 @@ st.write("""
          Theoretical Discussion page or the accompanying publication available through the links below.
          """)
 st.page_link("pages/5_Theoretical Discussion.py", label="Theoretical Discussion", icon="📃")
-st.page_link("https://doi.org/10.1002/admi.202500717", label="Publication", icon="📜")
+st.page_link("https://arxiv.org/abs/2503.05111", label="Publication", icon="📜")
 
 st.subheader("Experimental Parameters")
     
 #Input user parameters
 material = st.selectbox('Pick a material:', materials_list)
-
 if material == 'Other':
     pNS = st.number_input('Density of Custom Material in $g$ $cm^{-3}$', key='matdensity1', value=2.0) * 1000
     d1 = st.number_input('Monolayer thickness from unit cell in Å', key='matthickness', value=3.0) * 1E-10
