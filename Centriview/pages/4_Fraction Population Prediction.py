@@ -77,7 +77,7 @@ st.write("""
          Theoretical Discussion page or the accompanying publication available through the links below.
          """)
 st.page_link("pages/5_Theoretical Discussion.py", label="Theoretical Discussion", icon="📃")
-st.page_link("https://arxiv.org/abs/2503.05111", label="Publication", icon="📜")
+st.page_link("https://doi.org/10.1002/admi.202500717", label="Publication", icon="📜")
 
 st.subheader("Experimental Parameters")
     
