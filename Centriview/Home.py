@@ -34,13 +34,13 @@ st.markdown("""
             1. Centrifuge Speed Calculation - calculate the central rpm of a 2 step cascade to optimise for a target flake size
             2. Experiment comparison - identify the centrifuge conditions required to replicate seperation achieved with a different material or solvent system.
             3. Changing Rotor Dimensions - as above, with additional flexibility to change the rotor dimensions. _Note this can only be an approximate solution_
-            4. Theoretical Discussion - a brief overview of the equations and theory behind the tool. For a full discussion, see the publication linked below.
-            5. Fraction Population Prediction - visualise the change in flake size distribution for a given experiment.
+            4. Fraction Population Prediction - visualise the change in flake size distribution for a given experiment.
+            5. Theoretical Discussion - a brief overview of the equations and theory behind the tool. For a full discussion, see the publication linked below.
             """)
 
 st.markdown(r"""
             ### Want to know more?
-            - The equations and full discussion are published at [arXve](https://arxiv.org/abs/2503.05111). If
+            - The equations and full discussion are published [here](https://doi.org/10.1002/admi.202500717). If
             you make use of this tool, please reference the above publication in
             your own works.
             - The code and database for this webapp is made freely available and open-source 

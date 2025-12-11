@@ -46,7 +46,7 @@ Z = (1-f2)*f1
 st.title('Theoretical Discussion')
 
 st.write("""
-         The complete theoretical considerations are published in a pre-print available [here](https://arxiv.org/abs/2503.05111).
+         The complete theoretical considerations are published [here](https://doi.org/10.1002/admi.202500717).
          Here is given a basic overview to facilitate an understanding of the calculations being run.
 
          The speed at which a nanosheet sinks in a centrifugal field can be defined from its size. 
