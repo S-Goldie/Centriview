@@ -1,6 +1,6 @@
 # Centriview
 Visual tools for understanding the motion of 2D nanosheets in a centrifugal field.
-The theoretical basis and experimental data underpinning these tools are available from Wiley [here](https://doi.org/10.1002/admi.202500717).
+The theoretical basis and experimental data underpinning these tools are detailed in our publication _'Centrifugation Theory Revisited: Understanding and Modeling the Centrifugation of 2D Nanosheets'_ available [here](https://doi.org/10.1002/admi.202500717).
 
 ## Contents
 * Python scripts for deployment of WebApp to visualise population changes using the Streamlit package.
