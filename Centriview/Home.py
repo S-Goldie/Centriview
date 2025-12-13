@@ -40,11 +40,9 @@ st.markdown("""
 
 st.markdown(r"""
             ### Want to know more?
-            - The equations and full discussion are published [here](https://doi.org/10.1002/admi.202500717). If
-            you make use of this tool, please reference the above publication in
-            your own works.
-            - The code and database for this webapp is made freely available and open-source 
-            on [GitHub](https://github.com/S-Goldie/Centriview).
+            - The equations and full discussion are found in our publication: _'Centrifugation Theory Revisited: Understanding and Modeling the Centrifugation of 2D Nanosheets'_ available [here](https://doi.org/10.1002/admi.202500717). If
+            you make use of this tool, please reference the above publication in your own works.
+            - The code and database for this webapp is made freely available and open-source on [GitHub](https://github.com/S-Goldie/Centriview).
 
             ---
             ### Author Affiliations
