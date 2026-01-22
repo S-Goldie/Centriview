@@ -120,7 +120,7 @@ st.markdown(r"""
 #Most probable nanosheet size
 st.subheader('Most Probable Nanosheet Size')
 
-st.markdown(r'Finding $𝑑𝐹_{𝑆𝑒𝑑,𝑛} / 𝑑(𝑁𝐿) =0 $ and after some rearranging:')
+st.markdown(r'Finding $𝑑𝐹_{𝑆𝑒𝑑,𝑛} / 𝑑(𝑁𝐿) = 0$ and after some rearranging:')
 
 st.latex(r'''
 \frac{\omega_{i-1}^2 t_{i-1}}{\omega_i^2 t_i + \omega_{i-1}^2 t_{i-1}} e^{S \omega_i^2 t_i}
