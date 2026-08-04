@@ -124,8 +124,8 @@ else:
 st.markdown("""Illustrations of rotor geometry are included in the Theoretical Discussion. 
             These values are typical for a full tube in a fixed angle rotor, but for best 
             results the exact geometry should be measured.""")
-r1 = st.number_input('$R_1$ - Radius from axis to top of the liquid in cm', value=7.1)/100
-r2 = st.number_input('$R_2$ - Radius from axis to top of the sediment in cm', value=10)/100
+r1 = st.number_input('$R_1$ - Radius from axis to top of the liquid in mm', value=71)/1000
+r2 = st.number_input('$R_2$ - Radius from axis to top of the sediment in mm', value=100)/1000
 
 time_hour = st.slider('Select time in minutes (use left/right arrow keys for fine adjustment)', min_value=10, max_value=540, value=120) / 60
 st.markdown(f'Hours: {time_hour:.1f} h')
@@ -141,7 +141,7 @@ rpm_higher = col2.slider('Select rpm of sedimentation retention', min_value=100,
 
 #Define the plot parameters and apply the model to the plot
 dummy_layer_numbers = np.arange(start=0.5, stop=20.1, step=0.1)
-dummy_lateral_size = np.arange(start=10, stop=1501, step=1)
+dummy_lateral_size = np.arange(start=10, stop=5000, step=5)
 if aspect_flag == True:
     aspect_ratio_lengths = 1e09*dummy_layer_numbers*d1*k2/np.sqrt(k1)
 
@@ -255,7 +255,7 @@ with st.expander("See more information and to view 3D plot"):
 mplstyle.use('fast')
 fig1, ax1 = plt.subplots()
 CS = ax1.contour(X, Y, Z, 6, cmap=cm.coolwarm)
-ax1.set(xlim=(0, 20), ylim=(0, 1500),  xlabel="Layer Number", ylabel="Lateral Size / nm")
+ax1.set(xlim=(0, 20), ylim=(0, 5000),  xlabel="Layer Number", ylabel="Lateral Size / nm")
 if aspect_flag == True:
     ax1.plot(dummy_layer_numbers, aspect_ratio_lengths, linestyle='--', linewidth=1, color='grey')
 plt.tight_layout()
